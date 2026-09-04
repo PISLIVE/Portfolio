@@ -29,24 +29,16 @@
 [data-animate="zoom-in"].animated { transform: scale(1); }
 
 
-/* ── Liquid Tilt Orb support ────────────────── */
-/* The .liquid-orb is injected by JS — cards need transform-style */
+/* ── Liquid Tilt support ────────────────── */
 .glass-card,
 .project-card,
 .edu-card,
 .blog-card {
   transform-style: preserve-3d;
   will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Ensure card children stay above the orb */
-.glass-card > *:not(.liquid-orb),
-.project-card > *:not(.liquid-orb),
-.edu-card > *:not(.liquid-orb),
-.blog-card > *:not(.liquid-orb) {
-  position: relative;
-  z-index: 1;
-}
 
 
 /* ── Glitch Effect (Hero title) ─────────────── */
