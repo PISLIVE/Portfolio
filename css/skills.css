@@ -1,0 +1,206 @@
+/* ============================================
+   SKILLS SECTION
+   ============================================ */
+.skills { background: var(--clr-bg); }
+
+.skills__categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.skill-category {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.skill-category:hover {
+  border-color: var(--clr-border-2);
+  box-shadow: var(--shadow-gold);
+}
+
+.skill-category__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.skill-category__icon {
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251,191,36,0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(251,191,36,0.2);
+}
+
+.skill-category__header h3 {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.skill-category__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+/* Skill Pills */
+.skill-pill {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skill-pill__icon {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.skill-pill__name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.skill-pill__bar {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.skill-pill__fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
+  border-radius: var(--radius-full);
+  transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 8px rgba(251,191,36,0.4);
+}
+
+.skill-pill__fill.animated {
+  width: var(--w);
+}
+
+/* Tech Orbit */
+.tech-orbit {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbit-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-400));
+  color: #0d0d0d;
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  z-index: 2;
+  box-shadow: 0 0 30px rgba(251,191,36,0.4);
+}
+
+.orbit-center small {
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  opacity: 0.7;
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(251,191,36,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbit--1 {
+  width: 160px;
+  height: 160px;
+  animation: orbit-rotate 8s linear infinite;
+}
+
+.orbit--2 {
+  width: 250px;
+  height: 250px;
+  animation: orbit-rotate 14s linear infinite reverse;
+}
+
+.orbit--3 {
+  width: 340px;
+  height: 340px;
+  animation: orbit-rotate 20s linear infinite;
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.orbit-dot {
+  position: absolute;
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--clr-bg-3);
+  border: 1px solid var(--clr-border-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: default;
+  transition: transform var(--transition-base);
+}
+
+.orbit-dot:hover { transform: scale(1.2); }
+
+/* Position orbit dots evenly */
+.orbit--1 .orbit-dot:nth-child(1) { top: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--1 .orbit-dot:nth-child(2) { bottom: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--2 .orbit-dot:nth-child(1) { top: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--2 .orbit-dot:nth-child(2) { top: 50%; right: -22px; transform: translateY(-50%); }
+.orbit--2 .orbit-dot:nth-child(3) { bottom: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--3 .orbit-dot:nth-child(1) { top: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--3 .orbit-dot:nth-child(2) { top: 50%; right: -22px; transform: translateY(-50%); }
+.orbit--3 .orbit-dot:nth-child(3) { bottom: -22px; left: 50%; transform: translateX(-50%); }
+.orbit--3 .orbit-dot:nth-child(4) { top: 50%; left: -22px; transform: translateY(-50%); }
+
+/* Counter-rotate dots so they stay upright */
+.orbit--1 { }
+.orbit--1 .orbit-dot { animation: counter-rotate 8s linear infinite; }
+.orbit--2 .orbit-dot { animation: counter-rotate 14s linear infinite reverse; }
+.orbit--3 .orbit-dot { animation: counter-rotate 20s linear infinite; }
+
+@keyframes counter-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@media (max-width: 768px) {
+  .skills__categories { grid-template-columns: 1fr; }
+  .tech-orbit { display: none; }
+}
