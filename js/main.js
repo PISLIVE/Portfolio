@@ -12,24 +12,25 @@
     }, { passive: true });
   }
 
-  // ── Avatar 3D Mouse Track (Hero) ───────────
-  const heroVisual  = document.getElementById('hero-visual');
-  const avatarFrame = document.querySelector('.avatar-frame');
-  if (heroVisual && avatarFrame) {
-    heroVisual.addEventListener('mousemove', e => {
-      const rect = heroVisual.getBoundingClientRect();
-      const cx   = rect.left + rect.width  / 2;
-      const cy   = rect.top  + rect.height / 2;
-      const dx   = (e.clientX - cx) / (rect.width  / 2);
-      const dy   = (e.clientY - cy) / (rect.height / 2);
-      heroVisual.style.transform  = `perspective(900px) rotateX(${-dy * 10}deg) rotateY(${dx * 10}deg)`;
-      heroVisual.style.transition = 'transform 0.1s ease';
+  // ── Avatar Hover (Hero) ────────────────────
+  const heroVisual = document.getElementById('hero-visual');
+  if (heroVisual) {
+    heroVisual.addEventListener('mouseenter', () => {
+      heroVisual.style.transform  = 'translateY(-6px)';
+      heroVisual.style.transition = 'transform 0.4s ease';
     });
     heroVisual.addEventListener('mouseleave', () => {
       heroVisual.style.transform  = '';
-      heroVisual.style.transition = 'transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)';
     });
   }
+
+  // ── Reset any inline tilt transforms ───────
+  document.querySelectorAll('.project-card, .glass-card, .edu-card, .blog-card').forEach(el => {
+    el.style.transform   = '';
+    el.style.boxShadow   = '';
+    el.style.borderColor = '';
+  });
+
 
   // ── Ripple Effect on Buttons ───────────────
   document.querySelectorAll('.btn').forEach(btn => {
