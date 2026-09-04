@@ -1,0 +1,494 @@
+/* ============================================
+   BACKGROUND ANIMATIONS — Site-wide
+   Animated aurora blobs, drifting grid, 
+   floating geometric shapes, section glows
+   ============================================ */
+
+
+/* ── 1. Global drifting tech grid ───────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(251, 191, 36, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 191, 36, 0.025) 1px, transparent 1px);
+  background-size: 70px 70px;
+  z-index: 0;
+  pointer-events: none;
+  animation: grid-drift 25s linear infinite;
+}
+
+@keyframes grid-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 70px 70px; }
+}
+
+
+/* ── 2. Global ambient aurora (fixed, full screen) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(251, 191, 36, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(217, 119, 6, 0.04) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+  animation: ambient-shift 18s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-shift {
+  0%   { opacity: 0.6; transform: scale(1) rotate(0deg); }
+  50%  { opacity: 1;   transform: scale(1.05) rotate(1deg); }
+  100% { opacity: 0.7; transform: scale(0.98) rotate(-1deg); }
+}
+
+
+/* ── 3. ABOUT section — amber aurora top-right ─ */
+.about::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.07) 0%,
+    rgba(251, 191, 36, 0.03) 40%,
+    transparent 70%
+  );
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+  z-index: 0;
+  animation: blob-float-a 14s ease-in-out infinite;
+}
+
+.about::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(217, 119, 6, 0.05) 0%,
+    transparent 65%
+  );
+  bottom: -100px;
+  left: -100px;
+  pointer-events: none;
+  z-index: 0;
+  animation: blob-float-b 18s ease-in-out infinite;
+}
+
+@keyframes blob-float-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(-30px, 20px) scale(1.08); }
+  66%      { transform: translate(20px, -30px) scale(0.95); }
+}
+
+@keyframes blob-float-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(40px, -20px) scale(1.12); }
+}
+
+
+/* ── 4. SKILLS section — rotating conic glow ── */
+.skills {
+  position: relative;
+  overflow: hidden;
+}
+
+.skills::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(251, 191, 36, 0.04) 60deg,
+    transparent 120deg,
+    rgba(251, 191, 36, 0.03) 180deg,
+    transparent 240deg,
+    rgba(251, 191, 36, 0.04) 300deg,
+    transparent 360deg
+  );
+  animation: conic-spin 30s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.skills::after {
+  content: '';
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(251, 191, 36, 0.05) 0%,
+    transparent 55%
+  );
+  animation: pulse-bg 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes conic-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes pulse-bg {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.1); }
+}
+
+
+/* ── 5. EXPERIENCE section — scan line ─────── */
+.experience {
+  position: relative;
+  overflow: hidden;
+}
+
+.experience::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(251, 191, 36, 0.4),
+    transparent
+  );
+  top: 0;
+  animation: scan-line 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.experience::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.05) 0%,
+    transparent 70%
+  );
+  animation: blob-float-a 16s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes scan-line {
+  0%   { top: 0%;   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+
+/* ── 6. PROJECTS section — hexagon grid ───── */
+.projects {
+  position: relative;
+  overflow: hidden;
+}
+
+.projects::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zm0-4.2L52 48V20L28 4.2 4 20v28l24 13.8z' fill='%23fbbf24' fill-opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 56px 100px;
+  animation: hex-drift 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.projects::after {
+  content: '';
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  right: -300px;
+  bottom: -300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.05) 0%,
+    transparent 65%
+  );
+  animation: blob-float-b 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes hex-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 56px 100px; }
+}
+
+
+/* ── 7. EDUCATION section — constellation ── */
+.education {
+  position: relative;
+  overflow: hidden;
+}
+
+.education::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    rgba(251, 191, 36, 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 40px 40px;
+  animation: dot-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.education::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.06) 0%,
+    transparent 65%
+  );
+  animation: pulse-bg 10s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+
+/* ── 8. TESTIMONIALS section — wave glow ─── */
+.testimonials {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials::before {
+  content: '';
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    transparent 0deg,
+    rgba(251, 191, 36, 0.03) 45deg,
+    transparent 90deg,
+    rgba(251, 191, 36, 0.02) 135deg,
+    transparent 180deg,
+    rgba(251, 191, 36, 0.03) 225deg,
+    transparent 270deg,
+    rgba(251, 191, 36, 0.02) 315deg,
+    transparent 360deg
+  );
+  animation: conic-spin 40s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ── 9. BLOG section — diagonal beam ───────── */
+.blog {
+  position: relative;
+  overflow: hidden;
+}
+
+.blog::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  top: 0;
+  left: 20%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(251, 191, 36, 0.1),
+    transparent
+  );
+  animation: beam-move 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blog::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  top: 0;
+  right: 25%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(251, 191, 36, 0.07),
+    transparent
+  );
+  animation: beam-move 11s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes beam-move {
+  0%, 100% { transform: scaleY(0.3) translateY(0); opacity: 0.4; }
+  50%       { transform: scaleY(1) translateY(0); opacity: 1; }
+}
+
+
+/* ── 10. CONTACT section — pulsing rings ───── */
+.contact {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(251, 191, 36, 0.06);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-expand 5s ease-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(251, 191, 36, 0.05);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-expand 5s ease-out infinite 2.5s;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes ring-expand {
+  0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}
+
+
+/* ── 11. Floating geometric shapes ──────────── */
+.geo-shape {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  border: 1px solid rgba(251, 191, 36, 0.08);
+  animation: geo-float linear infinite;
+}
+
+.geo-shape--triangle {
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 52px solid rgba(251, 191, 36, 0.04);
+  border-top: none;
+  background: transparent;
+}
+
+.geo-shape--circle {
+  border-radius: 50%;
+  background: transparent;
+}
+
+.geo-shape--diamond {
+  transform-origin: center;
+  background: rgba(251, 191, 36, 0.02);
+}
+
+@keyframes geo-float {
+  0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+}
+
+
+/* ── 12. Shooting stars ─────────────────────── */
+.shooting-star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(to left, var(--clr-accent), transparent);
+}
+
+@keyframes shoot {
+  0%   { transform: translateX(0) translateY(0); opacity: 1; }
+  100% { transform: translateX(-400px) translateY(200px); opacity: 0; }
+}
+
+
+/* ── Ensure section content stays above bg ─── */
+.about > .container,
+.skills > .container,
+.experience > .container,
+.projects > .container,
+.education > .container,
+.testimonials > .container,
+.blog > .container,
+.contact > .container {
+  position: relative;
+  z-index: 1;
+}
