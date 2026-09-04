@@ -2,7 +2,7 @@
    ANIMATIONS & SCROLL REVEAL
    ============================================ */
 
-/* Fade Up - default animation */
+/* ── Scroll Reveal ─────────────────────────── */
 [data-animate] {
   opacity: 0;
   transform: translateY(40px);
@@ -14,7 +14,6 @@
   transform: translateY(0);
 }
 
-/* Stagger delays */
 [data-delay="100"] { transition-delay: 100ms; }
 [data-delay="200"] { transition-delay: 200ms; }
 [data-delay="300"] { transition-delay: 300ms; }
@@ -22,31 +21,127 @@
 [data-delay="500"] { transition-delay: 500ms; }
 [data-delay="600"] { transition-delay: 600ms; }
 
-/* Fade variants */
-[data-animate="fade-left"] {
-  transform: translateX(-40px);
-}
-[data-animate="fade-left"].animated {
-  transform: translateX(0);
+[data-animate="fade-left"]  { transform: translateX(-40px); }
+[data-animate="fade-left"].animated { transform: translateX(0); }
+[data-animate="fade-right"] { transform: translateX(40px); }
+[data-animate="fade-right"].animated { transform: translateX(0); }
+[data-animate="zoom-in"]    { transform: scale(0.85); }
+[data-animate="zoom-in"].animated { transform: scale(1); }
+
+
+/* ── SPOTLIGHT Effect on Cards ─────────────── */
+.glass-card,
+.project-card,
+.edu-card,
+.blog-card {
+  position: relative;
+  overflow: hidden;
+  --spot-x: 50%;
+  --spot-y: 50%;
 }
 
-[data-animate="fade-right"] {
-  transform: translateX(40px);
-}
-[data-animate="fade-right"].animated {
-  transform: translateX(0);
+.glass-card::before,
+.project-card::before,
+.edu-card::before,
+.blog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--spot-x) var(--spot-y),
+    rgba(251, 191, 36, 0.10),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
-[data-animate="zoom-in"] {
-  transform: scale(0.85);
-}
-[data-animate="zoom-in"].animated {
-  transform: scale(1);
+.glass-card.spotlight-active::before,
+.project-card.spotlight-active::before,
+.edu-card.spotlight-active::before,
+.blog-card.spotlight-active::before {
+  opacity: 1;
 }
 
-/* Shimmer */
+/* Ensure card content stays above spotlight */
+.glass-card > *,
+.project-card > *,
+.edu-card > *,
+.blog-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Neon Border Glow on hover ──────────────── */
+.project-card:hover,
+.blog-card:hover {
+  border-color: rgba(251, 191, 36, 0.5) !important;
+  box-shadow: 0 0 0 1px rgba(251,191,36,0.2),
+              0 0 20px rgba(251,191,36,0.15),
+              0 20px 40px rgba(0,0,0,0.5) !important;
+}
+
+
+/* ── Glitch Effect (Hero title) ─────────────── */
+.glitch {
+  position: relative;
+  animation: glitch-main 4s steps(1) infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: var(--gold-300);
+  animation: glitch-before 4s steps(1) infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+  -webkit-text-fill-color: rgba(251, 220, 100, 0.6);
+}
+
+.glitch::after {
+  color: var(--gold-600);
+  animation: glitch-after 4s steps(1) infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  -webkit-text-fill-color: rgba(217, 119, 6, 0.5);
+}
+
+@keyframes glitch-main {
+  0%, 90%, 100%  { transform: none; }
+  91%            { transform: skewX(-1deg); }
+  93%            { transform: skewX(1deg); }
+}
+
+@keyframes glitch-before {
+  0%, 88%, 100%  { transform: none; opacity: 0; }
+  89%            { transform: translate(-3px, 1px); opacity: 1; }
+  91%            { transform: translate(3px, -1px); opacity: 1; }
+  93%            { opacity: 0; }
+}
+
+@keyframes glitch-after {
+  0%, 88%, 100%  { transform: none; opacity: 0; }
+  90%            { transform: translate(3px, -2px); opacity: 1; }
+  92%            { transform: translate(-3px, 2px); opacity: 1; }
+  94%            { opacity: 0; }
+}
+
+
+/* ── Shimmer text ───────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: -200% center; }
+  0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
@@ -56,23 +151,264 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
+  animation: shimmer 3.5s linear infinite;
 }
 
-/* Glow pulse */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(251,191,36,0.2); }
-  50% { box-shadow: 0 0 40px rgba(251,191,36,0.5); }
+
+/* ── Floating Elements ──────────────────────── */
+@keyframes float-up-down {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-14px); }
 }
 
-/* Slide in top */
-@keyframes slideInTop {
-  from { opacity: 0; transform: translateY(-20px); }
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%      { transform: translateY(-8px) rotate(1deg); }
+  66%      { transform: translateY(-4px) rotate(-1deg); }
+}
+
+.float-anim {
+  animation: float-up-down 5s ease-in-out infinite;
+}
+
+
+/* ── Slide-in from sides ────────────────────── */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(50px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Scale in */
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.8); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* ── Gradient Sweep (section backgrounds) ──── */
+@keyframes gradient-sweep {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ── Ripple on button click ─────────────────── */
+.btn {
+  overflow: hidden;
+}
+
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transform: scale(0);
+  animation: ripple-expand 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  to { transform: scale(4); opacity: 0; }
+}
+
+
+/* ── Typewriter cursor blink ────────────────── */
+@keyframes blink {
+  0%, 50%  { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+
+/* ── Pulse glow ─────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 8px var(--clr-success); }
+  50%      { box-shadow: 0 0 16px var(--clr-success), 0 0 30px var(--clr-success); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(251,191,36,0.2); }
+  50%      { box-shadow: 0 0 40px rgba(251,191,36,0.5); }
+}
+
+
+/* ── Wave underline on section tags ─────────── */
+.section-tag {
+  position: relative;
+  display: inline-block;
+}
+
+.section-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--clr-accent), transparent);
+  animation: wave-line 2s ease-in-out infinite;
+  transform-origin: left;
+}
+
+@keyframes wave-line {
+  0%, 100% { transform: scaleX(0.3); opacity: 0.5; }
+  50%      { transform: scaleX(1);   opacity: 1; }
+}
+
+
+/* ── Orbit rotate ───────────────────────────── */
+@keyframes rotate-ring {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes counter-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+
+/* ── Scroll indicator ───────────────────────── */
+@keyframes scroll-wheel {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(8px); }
+}
+
+
+/* ── Loader pulse ───────────────────────────── */
+@keyframes loader-pulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 40px rgba(251,191,36,0.4); }
+  50%      { transform: scale(1.08); box-shadow: 0 0 60px rgba(251,191,36,0.7); }
+}
+
+
+/* ── Section entrance wipe ──────────────────── */
+.section--visible {
+  animation: section-wipe 0.4s ease forwards;
+}
+
+@keyframes section-wipe {
+  from { opacity: 0.95; }
+  to   { opacity: 1; }
+}
+
+
+/* ── Hero content entrance ──────────────────── */
+#hero-content {
+  animation: slideInLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.8s both;
+}
+
+#hero-visual {
+  animation: slideInRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.8s both;
+}
+
+
+/* ── Skill bar animated fill ────────────────── */
+.skill-pill__fill {
+  width: 0 !important;
+  transition: width 1.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.skill-pill__fill.animated {
+  width: var(--w) !important;
+}
+
+
+/* ── Nav link hover underline slide ─────────── */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 20px;
+  height: 2px;
+  background: var(--clr-accent);
+  border-radius: 9999px;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+
+/* ── Card shine sweep on hover ──────────────── */
+.project-card::after,
+.blog-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(251, 191, 36, 0.06) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.project-card:hover::after,
+.blog-card:hover::after {
+  transform: translateX(100%);
+}
+
+
+/* ── Number counter pop ─────────────────────── */
+@keyframes counter-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.stat-number.pop {
+  animation: counter-pop 0.4s ease;
+}
+
+
+/* ── Timeline dot pulse ─────────────────────── */
+.dot-inner {
+  animation: pulse-dot 2s infinite;
+}
+
+
+/* ── Experience card slide-in ───────────────── */
+.timeline-item--left  { --slide-dir: -50px; }
+.timeline-item--right { --slide-dir: 50px; }
+
+.timeline-item .timeline-card {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.timeline-item.revealed .timeline-card {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
 }

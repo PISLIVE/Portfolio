@@ -1,47 +1,59 @@
 /* ============================================
-   3D TILT EFFECT (Mouse / Touch)
+   3D SPOTLIGHT EFFECT (replaces mouse-tilt)
+   Cards light up from the inside following the cursor
    ============================================ */
 (function () {
-  const TILT_TARGETS = '.project-card, .glass-card, .edu-card, .testimonial-card';
-  const MAX_TILT = 10; // degrees
-  const PERSPECTIVE = 1000;
-  const SCALE = 1.02;
 
-  function applyTilt(el, x, y) {
+  const CARDS = '.project-card, .glass-card, .edu-card, .blog-card';
+
+  // Spotlight color per card type
+  const SPOTLIGHT = 'rgba(251, 191, 36, 0.12)';
+
+  function onMove(el, e) {
     const rect = el.getBoundingClientRect();
+
+    // Mouse position relative to card (0–100)
+    const x = ((e.clientX - rect.left) / rect.width)  * 100;
+    const y = ((e.clientY - rect.top)  / rect.height) * 100;
+
+    // Slight 3D depth tilt
     const cx   = rect.left + rect.width  / 2;
     const cy   = rect.top  + rect.height / 2;
-    const dx   = (x - cx) / (rect.width  / 2);
-    const dy   = (y - cy) / (rect.height / 2);
-    const rotX = -dy * MAX_TILT;
-    const rotY =  dx * MAX_TILT;
+    const dx   = (e.clientX - cx) / (rect.width  / 2);
+    const dy   = (e.clientY - cy) / (rect.height / 2);
+    const rotX = -dy * 6;
+    const rotY =  dx * 6;
 
-    el.style.transform    = `perspective(${PERSPECTIVE}px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${SCALE})`;
-    el.style.transition   = 'transform 0.1s ease';
+    el.style.transform  = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+    el.style.transition = 'transform 0.1s ease';
+
+    // Moving radial spotlight
+    el.style.setProperty('--spot-x', x + '%');
+    el.style.setProperty('--spot-y', y + '%');
+    el.classList.add('spotlight-active');
   }
 
-  function resetTilt(el) {
+  function onLeave(el) {
     el.style.transform  = '';
-    el.style.transition = 'transform 0.4s ease';
+    el.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    el.classList.remove('spotlight-active');
+  }
+
+  // Touch support
+  function onTouch(el, e) {
+    const t = e.touches[0];
+    onMove(el, { clientX: t.clientX, clientY: t.clientY });
   }
 
   function init() {
-    document.querySelectorAll(TILT_TARGETS).forEach(el => {
-      // Mouse
-      el.addEventListener('mousemove', e => applyTilt(el, e.clientX, e.clientY));
-      el.addEventListener('mouseleave', () => resetTilt(el));
-
-      // Touch
-      el.addEventListener('touchmove', e => {
-        const touch = e.touches[0];
-        applyTilt(el, touch.clientX, touch.clientY);
-      }, { passive: true });
-
-      el.addEventListener('touchend', () => resetTilt(el));
+    document.querySelectorAll(CARDS).forEach(el => {
+      el.addEventListener('mousemove', e => onMove(el, e));
+      el.addEventListener('mouseleave', () => onLeave(el));
+      el.addEventListener('touchmove', e => onTouch(el, e), { passive: true });
+      el.addEventListener('touchend',  () => onLeave(el));
     });
   }
 
-  // Init after DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
