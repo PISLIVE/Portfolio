@@ -29,15 +29,25 @@
 [data-animate="zoom-in"].animated { transform: scale(1); }
 
 
-/* ── Liquid Tilt support ────────────────── */
+/* ── Simple Card Hover (Flat & Clean) ────────── */
 .glass-card,
 .project-card,
 .edu-card,
 .blog-card {
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform var(--transition-base),
+              border-color var(--transition-base),
+              box-shadow var(--transition-base);
 }
+
+.glass-card:hover,
+.project-card:hover,
+.edu-card:hover,
+.blog-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--clr-border-2);
+  box-shadow: var(--shadow-gold);
+}
+
 
 
 
